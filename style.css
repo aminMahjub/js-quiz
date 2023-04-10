@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@100;300;500&display=swap');
+
+* {
+    margin: 0rem;
+    padding: 0rem;
+    border: 0rem;
+    font: inherit;
+    box-sizing: border-box;
+}
+
+button, 
+input[type="button"] {
+    outline: none;
+    background-color: transparent;
+}
+
+:is(input[type="button"], button):focus {
+    outline: none;
+}
+
+:root {
+    --app-bg: #141627;
+    --pure-white: #fff;
+    --text-cl: #37474F;
+    --qustion-box: #FFCA28;
+    --choice-input: #CFD8DC; 
+    --correct-answer: #b0fc38;
+    --wrong-answer: #FF0000;
+}
+
+body, 
+html {
+    background-color: var(--app-bg);
+    height: 100%;
+    font-family: 'Raleway', sans-serif;
+    color: var(--text-cl);
+    display: grid;
+}
+
+main {
+    align-self: center;
+    width: min(100%, 44rem);
+    background-color: var(--qustion-box);
+    margin-inline: auto;
+    border-radius: .7rem;
+    padding: 1.2rem 2.2rem;
+}
+
+.quesiton-counter {
+    display: flex;
+    justify-content: center;
+    gap: .7rem
+}
+
+.quesiton-counter button {
+    background-color: var(--app-bg);
+    color: var(--pure-white);
+    padding: .2rem .5rem;
+    border-radius: .4rem;
+    cursor: pointer;
+    transition: all .2s linear;
+}
+
+.quesiton-counter button:hover {
+    background-color: var(--pure-white);
+    color: var(--app-bg);
+
+}
+
+.question-container {
+    margin-top: .8rem;
+}
+
+.question {
+    background-color: var(--pure-white);
+    border-radius: .5rem;
+    height: 30vh;
+    text-align: center;
+    display: grid;
+}
+
+.question p {
+    align-self: center;
+    max-width: 25rem;
+    margin: auto;
+    word-break: break-all;
+}
+
+.choices {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 4rem);
+    gap: .4rem .8rem;
+    margin-top: .9rem;
+}
+
+.choice-btn {
+    background-color: var(--choice-input);
+    border-radius: .6rem;
+    cursor: pointer;
+    transition: background-color .3s ease-in .1s;
+    word-break: break-all;
+    padding: .2rem .4rem;
+    overflow-y: auto;
+}
+
+.correct-answer {
+    background-color: var(--correct-answer);
+}
+
+.wrong-answer {
+    background-color: var(--wrong-answer);
+}
