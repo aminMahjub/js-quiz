@@ -44,6 +44,8 @@ main {
     margin-inline: auto;
     border-radius: .7rem;
     padding: 1.2rem 2.2rem;
+    position: relative;
+    z-index: 1;
 }
 
 .quesiton-counter {
@@ -105,10 +107,47 @@ main {
     overflow-y: auto;
 }
 
+.choice-btn:disabled { 
+    color: var(--text-cl);
+    opacity: 1;
+}
+
+.disabled-btns {
+    z-index: 1;
+    position: relative;
+}
+
+.disabled-btns:after {
+    content: '';
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    background-color: #37474F;
+    z-index: 2;
+    position: absolute;
+    opacity: 0;
+}
+
 .correct-answer {
     background-color: var(--correct-answer);
 }
 
 .wrong-answer {
     background-color: var(--wrong-answer);
+}
+
+.end-game::after {
+    content: attr(arial-score);
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+    background-color: var(--qustion-box);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: .7rem;
 }
