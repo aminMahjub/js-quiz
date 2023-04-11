@@ -12,8 +12,8 @@ class Quiz {
         this.quizes = [
             new Question('What do you understand by HTML?', ['HTML describes the structure of a webpage', 'HTML is the standard markup language mainly used to create web pages', 'HTML consists of a set of elements that helps the browser how to view the content', 'All of the above', ], 3),
             new Question('Who is the father of HTML?', ['Rasmus Lerdorf', 'Tim Berners-Lee', 'Brendan Eich', 'Sergey Brin'], 1),
-            new Question('HTML stands for ___', ['HyperText Markup Language', 'HyperText Markup Language', 'HyperText Marking Language', 'HighText Marking Language'], 0),
-            new Question('Which tag is used for inserting the largest heading in HTML?', ['head', '<h1>', '<h6>', 'heading'], 2),
+            new Question('HTML stands for ___', ['HyperText Markup Language', 'HighText Markup Language', 'HyperText Marking Language', 'High Marking Language'], 0),
+            new Question('Which tag is used for inserting the largest heading in HTML?', ['head', '<h1>', '<h6>', 'heading'], 1),
             new Question('Which is used to read an HTML page and render it?', ['Web server', 'Web network', 'Web browser', 'Web matrix'], 0)
         ];
         this.score = 0;
@@ -56,26 +56,11 @@ class UpdateView {
             choiceBtn.setAttribute('type', 'button');
             choiceBtn.textContent = choice;
             choiceBtn.addEventListener('click', e => {
-                const choiceBtnsArr = document.querySelectorAll('.choices button');    
+                e.stopPropagation();
                 isAnswered = this.quizesArr.checkAnswer(e, correctChoice);
-
                 !isAnswered ? e.target.classList.add('wrong-answer') : null;
-                choiceBtnsArr[correctChoice].classList.add('correct-answer');
-                choicesRoot.classList.add('disabled-btns');
-
                 
-                // render the view for next question
-                const timeOutQuiz = setTimeout(() => {
-                        choicesRoot.innerHTML = '';
-                        choicesRoot.classList.remove('disabled-btns');
-                        this.quizesArr.currentQuestionNum++;
-                        this.updateUI();
-                }, 2000);
-
-                if (this.quizesArr.currentQuestionNum === this.quizesArr.quizes.length - 1) {
-                    clearTimeout(timeOutQuiz);
-                    this.endQuiz();
-                }
+                this.answeredAction({isAnswered, correctChoice, choicesRoot});
             });
 
             choicesRoot.append(choiceBtn);
@@ -86,8 +71,32 @@ class UpdateView {
 
     endQuiz() {
         const root = document.querySelector('main');
+
         root.setAttribute('arial-score', `Your Final Score ${this.quizesArr.score}%`);
         root.classList.add('end-game');
+    }
+
+    answeredAction(answerActionArg) {
+        let { isAnswered, correctChoice, choicesRoot } = answerActionArg;
+
+        const choiceBtnsArr = document.querySelectorAll('.choices button');    
+
+        choiceBtnsArr[correctChoice].classList.add('correct-answer');
+        choicesRoot.classList.add('disabled-btns');
+        // 09206800859
+
+        // render the view for next question
+        const timeOutQuiz = setTimeout(() => {
+                choicesRoot.innerHTML = '';
+                choicesRoot.classList.remove('disabled-btns');
+                this.quizesArr.currentQuestionNum++;
+                this.updateUI();
+        }, 2000);
+
+        if (this.quizesArr.currentQuestionNum === this.quizesArr.quizes.length - 1) {
+            clearTimeout(timeOutQuiz);
+            this.endQuiz();
+        }
     }
 }
 
