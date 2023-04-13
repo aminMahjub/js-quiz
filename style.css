@@ -48,18 +48,18 @@ main {
     z-index: 1;
 }
 
-.quesiton-counter {
+.question-next-previuos {
     display: flex;
     justify-content: center;
-    gap: .7rem
+    gap: .7rem;
 }
 
-.quesiton-counter button:disabled {
+.question-next-previuos button:disabled {
     opacity: .5;
     cursor: not-allowed;
 }
 
-.quesiton-counter button {
+.question-next-previuos button {
     background-color: var(--app-bg);
     color: var(--pure-white);
     padding: .2rem .5rem;
@@ -68,7 +68,7 @@ main {
     transition: all .2s linear;
 }
 
-.quesiton-counter button:hover {
+.question-next-previuos button:hover {
     background-color: var(--pure-white);
     color: var(--app-bg);
 
@@ -93,7 +93,7 @@ main {
     word-break: break-all;
 }
 
-.choices {
+.options {
     display: grid;
     justify-content: center;
     grid-template-columns: repeat(2, 1fr);
@@ -102,7 +102,7 @@ main {
     margin-top: .9rem;
 }
 
-.choice-btn {
+.option-btn {
     background-color: var(--choice-input);
     border-radius: .6rem;
     cursor: pointer;
@@ -112,7 +112,7 @@ main {
     overflow-y: auto;
 }
 
-.choice-btn:disabled { 
+.option-btn:disabled { 
     color: var(--text-cl);
     opacity: 1;
 }
