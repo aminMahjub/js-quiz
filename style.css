@@ -54,6 +54,11 @@ main {
     gap: .7rem
 }
 
+.quesiton-counter button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
 .quesiton-counter button {
     background-color: var(--app-bg);
     color: var(--pure-white);
@@ -136,18 +141,14 @@ main {
     background-color: var(--wrong-answer);
 }
 
-.end-game::after {
-    content: attr(arial-score);
-    width: 100%;
-    height: 100%;
-    display: inline-block;
-    background-color: var(--qustion-box);
-    position: absolute;
+.score {
+    position: fixed;
     top: 0px;
     left: 0px;
-    z-index: 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: .7rem;
+    font-size: 1.1rem;
+    color: var(--text-cl);
+    background-color: var(--correct-answer);
+    border-radius: .6rem;
+    padding: .4rem;
+    margin: .8rem;
 }

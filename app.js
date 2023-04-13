@@ -3,6 +3,7 @@ class Question {
         this.title = title;
         this.choices = choices;
         this.correctChoice = correctChoice;
+        this.yourAnswer = null;
         this.isAnswered = false;
     }
 }
@@ -20,14 +21,6 @@ class Quiz {
         this.currentQuestionNum = 0;
     }
 
-    checkAnswer(e ,correctChoice) {
-        const clickedChoiceBtnId = +e.target.id;
-        const quizStatus = clickedChoiceBtnId === correctChoice ?  true : false;
-        quizStatus ? this.calculateScore() : null;
-
-        return quizStatus;
-    }
-
     calculateScore() {
         const everyQuizScore = 100 / this.quizes.length;
         this.score += everyQuizScore;
@@ -37,68 +30,77 @@ class Quiz {
 class UpdateView {
     constructor(quizes) {
         this.quizesArr = quizes;
+        this.counterBtns = document.querySelectorAll('.quesiton-counter button');
+        this.choicesRoot = document.querySelector('.choices');
+        
+        this.counterBtns.forEach(counterBtn => counterBtn.addEventListener('click', () => {
+            counterBtn.classList[0] === 'previous-btn' ? this.nextPreviousActions(--this.quizesArr.currentQuestionNum) : this.nextPreviousActions(++this.quizesArr.currentQuestionNum);
+        }));
     }
 
-    updateUI() {
+    updateUI(currentQuestionNum) {
         const questionTitle = document.querySelector('.question p'),
-            choicesRoot = document.querySelector('.choices'),
             currentNumberQuestion = document.querySelector('.current-number-question'),
-            currentQuestion = this.quizesArr.quizes[this.quizesArr.currentQuestionNum];  
-        let { title, choices, correctChoice, isAnswered } = currentQuestion;
+            currentQuestion = this.quizesArr.quizes[currentQuestionNum],
+            score = document.querySelector('.score span');
+
+        let { title, choices, correctChoice, yourAnswer, isAnswered } = currentQuestion;
             
         questionTitle.textContent = title;
             
         choices.forEach((choice, index) => {
             const choiceBtn = document.createElement('button');
-
+            
             choiceBtn.classList.add('choice-btn');
             choiceBtn.id = `${index}`;
             choiceBtn.setAttribute('type', 'button');
             choiceBtn.textContent = choice;
             choiceBtn.addEventListener('click', e => {
                 e.stopPropagation();
-                isAnswered = this.quizesArr.checkAnswer(e, correctChoice);
-                !isAnswered ? e.target.classList.add('wrong-answer') : null;
-                
-                this.answeredAction({isAnswered, correctChoice, choicesRoot});
+                currentQuestion.yourAnswer = +e.target.id;
+                currentQuestion.yourAnswer === correctChoice ? this.quizesArr.calculateScore() : null;
+
+                this.answeredAction({ correctChoice, yourAnswer: currentQuestion.yourAnswer });
+                currentQuestion.isAnswered = true;
+
+                console.log(currentQuestion);
             });
-
-            choicesRoot.append(choiceBtn);
+            
+            this.choicesRoot.append(choiceBtn);
         });
+        
+        currentNumberQuestion.textContent = `${currentQuestionNum + 1} / ${this.quizesArr.quizes.length}`;
+        score.textContent = this.quizesArr.score;
 
-        currentNumberQuestion.textContent = `${this.quizesArr.currentQuestionNum + 1} / ${this.quizesArr.quizes.length}`;
-    }
-
-    endQuiz() {
-        const root = document.querySelector('main');
-
-        root.setAttribute('arial-score', `Your Final Score ${this.quizesArr.score}%`);
-        root.classList.add('end-game');
-    }
-
-    answeredAction(answerActionArg) {
-        let { isAnswered, correctChoice, choicesRoot } = answerActionArg;
-
-        const choiceBtnsArr = document.querySelectorAll('.choices button');    
-
-        choiceBtnsArr[correctChoice].classList.add('correct-answer');
-        choicesRoot.classList.add('disabled-btns');
-        // 09206800859
-
-        // render the view for next question
-        const timeOutQuiz = setTimeout(() => {
-                choicesRoot.innerHTML = '';
-                choicesRoot.classList.remove('disabled-btns');
-                this.quizesArr.currentQuestionNum++;
-                this.updateUI();
-        }, 2000);
-
-        if (this.quizesArr.currentQuestionNum === this.quizesArr.quizes.length - 1) {
-            clearTimeout(timeOutQuiz);
-            this.endQuiz();
+        // next privous acitions        
+        if (this.quizesArr.currentQuestionNum === 0) {
+            this.counterBtns[0].disabled = true;
+        } else if (this.quizesArr.currentQuestionNum === 4) {
+            this.counterBtns[1].disabled = true;
+        } else {
+            this.counterBtns[0].disabled = false;
+            this.counterBtns[1].disabled = false;
         }
+    }
+
+    answeredAction(currentQuestion) {
+        let { correctChoice, yourAnswer } = currentQuestion;
+        const choiceBtnsArr = document.querySelectorAll('.choices button');    
+    
+        choiceBtnsArr[correctChoice].classList.add('correct-answer');
+        this.choicesRoot.classList.add('disabled-btns');
+        yourAnswer !== correctChoice ? choiceBtnsArr[yourAnswer].classList.add('wrong-answer') : null;
+    }
+
+    nextPreviousActions(currentQuestionState) {
+        let { isAnswered } = this.quizesArr.quizes[currentQuestionState]; 
+        this.choicesRoot.innerHTML = '';
+        this.choicesRoot.classList.remove('disabled-btns'); 
+        this.updateUI(currentQuestionState);
+        isAnswered ? this.answeredAction(this.quizesArr.quizes[currentQuestionState]) : null;
     }
 }
 
-const app = new UpdateView(new Quiz());
-app.updateUI();
+const quiz = new Quiz();
+const app = new UpdateView(quiz);
+app.updateUI(quiz.currentQuestionNum);
