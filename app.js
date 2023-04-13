@@ -59,6 +59,7 @@ class UpdateView {
                 e.stopPropagation();
                 currentQuestion.yourAnswer = +e.target.id;
                 currentQuestion.yourAnswer === correctChoice ? this.quizesArr.calculateScore() : null;
+                score.textContent = this.quizesArr.score;
 
                 this.answeredAction({ correctChoice, yourAnswer: currentQuestion.yourAnswer });
                 currentQuestion.isAnswered = true;
@@ -70,7 +71,6 @@ class UpdateView {
         });
         
         currentNumberQuestion.textContent = `${currentQuestionNum + 1} / ${this.quizesArr.quizes.length}`;
-        score.textContent = this.quizesArr.score;
 
         // next privous acitions        
         if (this.quizesArr.currentQuestionNum === 0) {
