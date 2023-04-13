@@ -41,7 +41,6 @@ class UpdateView {
 
     renderView(currentQuestionIndex) {
         let questions = this.quiz.questions;
-        console.log(quiz);
         const { question, options, correctAnswer } = questions[currentQuestionIndex];
 
         const questionTitle = document.querySelector('.question p'),
@@ -61,7 +60,7 @@ class UpdateView {
 
             optionBtn.addEventListener('click', e => {
                 e.preventDefault();
-debugger;
+
                 questions[currentQuestionIndex].userAnswer = +e.target.id;
                 questions[currentQuestionIndex].userAnswer === correctAnswer ? this.quiz.calculateScore() : null;
                 showScore.textContent = this.quiz.score;
@@ -91,7 +90,6 @@ debugger;
     
         optionBtns[correctAnswer].classList.add('correct-answer');
         this.OptionsContainer.classList.add('disabled-btns');
-        console.log(optionBtns, userAnswer);
         userAnswer !== correctAnswer ? optionBtns[userAnswer].classList.add('wrong-answer') : null;
     }
 
